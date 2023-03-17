@@ -1,17 +1,28 @@
-// import * as Yup from 'yup';
 import PropTypes from 'prop-types';
-import { Formik, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import { nanoid } from 'nanoid';
+import { Formik } from 'formik';
 
-import { BtnSubmit } from './PhoneBook.styled';
-import { Field, Form } from './PhoneBook.styled';
+import { Field, Form, BtnSubmit, ErrorMessage } from './PhoneBook.styled';
+
+const PhoneBookSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
+  number: Yup.string()
+    .min(7, 'Too Short!')
+    .max(8, 'Too Long!')
+    .required('Required'),
+  filter: '',
+});
 
 export const PhoneBook = ({ onSabmit }) => {
   return (
     <>
       <Formik
         initialValues={{ name: '', number: '', filter: '' }}
-        // validationSchema={PhoneBookSchema}
+        validationSchema={PhoneBookSchema}
         onSubmit={(values, actions) => {
           onSabmit({ ...values, id: nanoid(), number: values.number });
           actions.resetForm();
@@ -29,7 +40,7 @@ export const PhoneBook = ({ onSabmit }) => {
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
           />
-          <ErrorMessage name="name" />
+          <ErrorMessage name="name" component="div" />
 
           <label htmlFor="number" type="tel" name="number" id="number"></label>
           <Field
@@ -42,6 +53,7 @@ export const PhoneBook = ({ onSabmit }) => {
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
           />
+          <ErrorMessage name="number" component="div" />
           <BtnSubmit type="submit">Add Contacts</BtnSubmit>
         </Form>
       </Formik>
