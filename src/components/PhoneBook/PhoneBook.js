@@ -11,8 +11,8 @@ const PhoneBookSchema = Yup.object().shape({
     .max(50, 'Too Long!')
     .required('Required'),
   number: Yup.string()
-    .min(7, 'Too Short!')
-    .max(8, 'Too Long!')
+    .min(3, 'Too Short!')
+    .max(20, 'Too Long!')
     .required('Required'),
   filter: '',
 });
